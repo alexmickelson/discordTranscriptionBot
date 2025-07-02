@@ -1,13 +1,15 @@
+import os
 import fastapi
 import asyncio
 from contextlib import asynccontextmanager
-from src.transcription_bot import start_bot, close_bot
+from src.transcription_bot import bot
+import sys
 
 @asynccontextmanager
 async def lifespan(app: fastapi.FastAPI):
-    asyncio.create_task(start_bot())
+    bot_task = asyncio.create_task(bot.start(os.environ["DISCORD_TOKEN"]))
     yield
-    await close_bot()
+    bot_task.cancel()
 
 app = fastapi.FastAPI(lifespan=lifespan)
 
