@@ -123,18 +123,6 @@ venv.bak/
 .spyderproject
 .spyproject
 
-# Rope project settings
-.ropeproject
-
-# PyCharm files
-.idea/
-
-# VSCode files
-.vscode/
-
-# Sublime Text files
-*.sublime-project
-*.sublime-workspace
 
 # dotenv
 .env
