@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 import asyncio
 from pydantic import BaseModel
+from discord import sinks # Explicitly import sinks
 
 load_dotenv()
 
@@ -25,7 +26,7 @@ intents.voice_states = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-async def finished_callback(sink: discord.sinks.WaveSink, channel: discord.TextChannel):
+async def finished_callback(sink: sinks.WaveSink, channel: discord.TextChannel): # type: ignore
     recorded_users = [f"<@{user_id}>" for user_id, audio in sink.audio_data.items()]
     await channel.send(f"Finished recording audio for: {', '.join(recorded_users)}.")
 
@@ -52,7 +53,7 @@ async def record_command(ctx: commands.Context):
     try:
         voice_channel = ctx.author.voice.channel
         bot_state.voice_client = await voice_channel.connect()
-        bot_state.voice_client.start_recording(discord.sinks.WaveSink(), finished_callback, ctx.channel)
+        bot_state.voice_client.start_recording(sinks.WaveSink(), finished_callback, ctx.channel)
         bot_state.is_recording = True
         bot_state.connected_channel = voice_channel
         await ctx.send(f"Started recording in {voice_channel.name}!")

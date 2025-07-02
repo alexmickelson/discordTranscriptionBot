@@ -7,4 +7,5 @@ requires-python = ">=3.12"
 dependencies = [
     "discord>=2.3.2",
     "fastapi>=0.115.14",
+    "pydantic>=2.11.7",
 ]
