@@ -3,20 +3,18 @@ from discord.ext import commands
 import os
 from dotenv import load_dotenv
 import asyncio
+from pydantic import BaseModel
 
 load_dotenv()
 
-# BotState Singleton
-class BotState:
-    _instance = None
+# BotState Pydantic Model
+class BotState(BaseModel):
+    is_recording: bool = False
+    voice_client: discord.VoiceClient | None = None
+    connected_channel: discord.VoiceChannel | None = None
 
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super(BotState, cls).__new__(cls)
-            cls._instance.is_recording = False
-            cls._instance.voice_client = None
-            cls._instance.connected_channel = None
-        return cls._instance
+    class Config:
+        arbitrary_types_allowed = True
 
 # Initialize BotState
 bot_state = BotState()
